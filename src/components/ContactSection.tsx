@@ -21,53 +21,20 @@ import { WhatsAppWidget } from "react-whatsapp-widget"
 import "react-whatsapp-widget/dist/index.css"
 
 const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "opeyemitimileyin102@example.com",
-    href: "mailto:opeyemitimileyin102@example.com",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+234 9158 547 128",
-    href: "tel:+2349158547128",
-  },
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "Sango Ota, Nigeria",
-    href: "#",
-  },
+  { icon: Mail, label: "Email", value: "opeyemitimileyin102@example.com", href: "mailto:opeyemitimileyin102@example.com" },
+  { icon: Phone, label: "Phone", value: "+234 9158 547 128", href: "tel:+2349158547128" },
+  { icon: MapPin, label: "Location", value: "Sango Ota, Nigeria", href: "#" },
 ]
 
 const socialLinks = [
   { icon: Linkedin, href: "#", label: "LinkedIn", color: "hover:text-blue-400" },
-  {
-    icon: Twitter,
-    href: "https://x.com/OpeyemiTim95975",
-    label: "Twitter",
-    color: "hover:text-sky-400",
-  },
-  {
-    icon: Instagram,
-    href: "https://www.instagram.com/operatech_45",
-    label: "Instagram",
-    color: "hover:text-pink-400",
-  },
-  {
-    icon: Github,
-    href: "https://github.com/Timileyin95",
-    label: "GitHub",
-    color: "hover:text-gray-400",
-  },
+  { icon: Twitter, href: "https://x.com/OpeyemiTim95975", label: "Twitter", color: "hover:text-sky-400" },
+  { icon: Instagram, href: "https://www.instagram.com/operatech_45", label: "Instagram", color: "hover:text-pink-400" },
+  { icon: Github, href: "https://github.com/Timileyin95", label: "GitHub", color: "hover:text-gray-400" },
 ]
 
 export const ContactSection = () => {
-  const [ref, inView] = useInView({
-    threshold: 0.3,
-    triggerOnce: true,
-  })
+  const [ref, inView] = useInView({ threshold: 0.3, triggerOnce: true })
 
   const [formData, setFormData] = useState({
     name: "",
@@ -76,65 +43,56 @@ export const ContactSection = () => {
     message: "",
   })
 
-  // ✅ Ad Script Injection (safe + stable)
+  // ✅ Ad and external script injection
   useEffect(() => {
     const adContainer = document.getElementById("ad-container")
-    if (!adContainer) return
+    if (adContainer) {
+      const script1 = document.createElement("script")
+      script1.type = "text/javascript"
+      script1.innerHTML = `
+        atOptions = {
+          'key': '4f56bea863fc1976f8053b2b4578c0ea',
+          'format': 'iframe',
+          'height': 60,
+          'width': 468,
+          'params': {}
+        };
+      `
+      const script2 = document.createElement("script")
+      script2.src = "https://www.highperformanceformat.com/4f56bea863fc1976f8053b2b4578c0ea/invoke.js"
+      script2.async = true
 
-    const script1 = document.createElement("script")
-    script1.type = "text/javascript"
-    script1.innerHTML = `
-      atOptions = {
-        'key': '4f56bea863fc1976f8053b2b4578c0ea',
-        'format': 'iframe',
-        'height': 60,
-        'width': 468,
-        'params': {}
-      };
-    `
+      adContainer.appendChild(script1)
+      adContainer.appendChild(script2)
+    }
 
-    const script2 = document.createElement("script")
-    script2.type = "text/javascript"
-    script2.src =
-      "https://www.highperformanceformat.com/4f56bea863fc1976f8053b2b4578c0ea/invoke.js"
-    script2.async = true
+    // ✅ New external script
+    const externalScript = document.createElement("script")
+    externalScript.type = "text/javascript"
+    externalScript.src = "https://pl28253303.effectivegatecpm.com/c0/d3/b9/c0d3b985389eee9ea5f298ce183159e8.js"
+    externalScript.async = true
+    document.body.appendChild(externalScript)
 
-    adContainer.appendChild(script1)
-    adContainer.appendChild(script2)
+    return () => {
+      document.body.removeChild(externalScript)
+    }
   }, [])
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }))
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
     const { name, email, subject, message } = formData
-
     const whatsappUrl =
       "https://wa.me/2349158547128?text=" +
       encodeURIComponent(
         `*New Contact Message*\n\nName: ${name}\nEmail: ${email}\nSubject: ${subject}\nMessage: ${message}`
       )
-
     window.open(whatsappUrl, "_blank")
-
-    toast.success("Redirecting to WhatsApp", {
-      description: "Your message is ready to send 🚀",
-    })
-
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    })
+    toast.success("Redirecting to WhatsApp", { description: "Your message is ready to send 🚀" })
+    setFormData({ name: "", email: "", subject: "", message: "" })
   }
 
   return (
@@ -157,11 +115,8 @@ export const ContactSection = () => {
         }}
       />
 
-      {/* WhatsApp Floating Widget */}
-      <WhatsAppWidget
-        phoneNumber="2349158547128"
-        textReplyTime="I reply fast!"
-      />
+      {/* WhatsApp Widget */}
+      <WhatsAppWidget phoneNumber="2349158547128" textReplyTime="I reply fast!" />
 
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -177,70 +132,36 @@ export const ContactSection = () => {
           </p>
         </motion.div>
 
-        {/* Ad */}
+        {/* Ad container */}
         <div className="bg-card p-4 rounded-2xl shadow-card-custom border border-border flex justify-center mb-16">
           <div id="ad-container" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          {/* Form */}
+          {/* Contact Form */}
           <div className="bg-card p-8 rounded-2xl shadow-card-custom border border-border">
             <h3 className="text-2xl font-bold mb-6">Send me a message</h3>
-
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-4">
-                <Input
-                  name="name"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-                <Input
-                  name="email"
-                  type="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                />
+                <Input name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
+                <Input name="email" type="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required />
               </div>
-
-              <Input
-                name="subject"
-                placeholder="Subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-              />
-
-              <Textarea
-                name="message"
-                rows={6}
-                placeholder="Tell me about your project..."
-                value={formData.message}
-                onChange={handleChange}
-                required
-              />
-
+              <Input name="subject" placeholder="Subject" value={formData.subject} onChange={handleChange} required />
+              <Textarea name="message" rows={6} placeholder="Tell me about your project..." value={formData.message} onChange={handleChange} required />
               <Button type="submit" size="lg" className="w-full">
                 Send Message <Send className="ml-2 w-4 h-4" />
               </Button>
             </form>
           </div>
 
-          {/* Info */}
+          {/* Contact Info & Social */}
           <div className="space-y-8">
             <div className="bg-card p-8 rounded-2xl border">
               <h3 className="text-2xl font-bold mb-6">Get in touch</h3>
-              {contactInfo.map((info) => {
+              {contactInfo.map(info => {
                 const Icon = info.icon
                 return (
-                  <a
-                    key={info.label}
-                    href={info.href}
-                    className="flex items-center gap-4 p-4 rounded-xl hover:bg-muted/50"
-                  >
+                  <a key={info.label} href={info.href} className="flex items-center gap-4 p-4 rounded-xl hover:bg-muted/50">
                     <Icon className="text-accent" />
                     <div>
                       <p className="font-medium">{info.label}</p>
@@ -254,14 +175,10 @@ export const ContactSection = () => {
             <div className="bg-card p-8 rounded-2xl border">
               <h3 className="text-2xl font-bold mb-6">Follow me</h3>
               <div className="grid grid-cols-2 gap-4">
-                {socialLinks.map((social) => {
+                {socialLinks.map(social => {
                   const Icon = social.icon
                   return (
-                    <a
-                      key={social.label}
-                      href={social.href}
-                      className={`flex items-center gap-3 p-4 rounded-xl bg-muted/30 ${social.color}`}
-                    >
+                    <a key={social.label} href={social.href} className={`flex items-center gap-3 p-4 rounded-xl bg-muted/30 ${social.color}`}>
                       <Icon />
                       {social.label}
                     </a>
@@ -271,9 +188,7 @@ export const ContactSection = () => {
             </div>
 
             <div className="p-8 rounded-2xl border border-accent/20 bg-gradient-accent/10">
-              <blockquote className="italic text-center">
-                “Design is how it works.”
-              </blockquote>
+              <blockquote className="italic text-center">“Design is how it works.”</blockquote>
               <p className="text-center mt-4 text-accent">— Opera Tech</p>
             </div>
           </div>
