@@ -32,7 +32,7 @@ export const TableOfContents = ({ activeSection, onNavigate }: TableOfContentsPr
 
   return (
     <motion.section
-      className="relative min-h-screen flex items-center justify-center bg-gradient-card p-8 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center bg-gradient-card p-2 overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
