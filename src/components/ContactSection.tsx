@@ -73,6 +73,18 @@ export const ContactSection = () => {
     externalScript.async = true
     document.body.appendChild(externalScript)
 
+    // ✅ Adsense script injection for below submit button
+    try {
+      const adsScript = document.createElement("script")
+      adsScript.async = true
+      adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2277283346287122"
+      adsScript.crossOrigin = "anonymous"
+      document.body.appendChild(adsScript)
+      (window.adsbygoogle = window.adsbygoogle || []).push({})
+    } catch (e) {
+      console.warn("Adsense error:", e)
+    }
+
     return () => {
       document.body.removeChild(externalScript)
     }
@@ -151,6 +163,16 @@ export const ContactSection = () => {
               <Button type="submit" size="lg" className="w-full">
                 Send Message <Send className="ml-2 w-4 h-4" />
               </Button>
+
+              {/* AdSense below submit button */}
+              <div className="my-6">
+                <ins className="adsbygoogle"
+                     style={{ display: "block" }}
+                     data-ad-format="fluid"
+                     data-ad-layout-key="-fb+5w+4e-db+86"
+                     data-ad-client="ca-pub-2277283346287122"
+                     data-ad-slot="1931382898"></ins>
+              </div>
             </form>
           </div>
 
