@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Laptop, Bot, FileText, Brain, Code as CodeIcon } from "lucide-react";
@@ -17,10 +18,28 @@ export const AboutSection = () => {
     triggerOnce: true,
   });
 
+  // ✅ Load AdSense script once
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+    script.setAttribute("data-ad-client", "ca-pub-2277283346287122");
+    document.head.appendChild(script);
+
+    // Trigger ads after script load
+    script.onload = () => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error("AdSense error:", e);
+      }
+    };
+  }, []);
+
   return (
     <motion.section
       ref={ref}
-      className="min-h-screen flex items-center justify-center bg-gradient-background p-8"
+      className="min-h-screen flex flex-col items-center justify-center bg-gradient-background p-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: inView ? 1 : 0 }}
       transition={{ duration: 0.8 }}
@@ -36,7 +55,7 @@ export const AboutSection = () => {
         </motion.h2>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Photo with circular reveal */}
+          {/* Photo */}
           <motion.div
             className="relative flex justify-center lg:justify-end"
             initial={{ opacity: 0, scale: 0 }}
@@ -60,25 +79,15 @@ export const AboutSection = () => {
                 />
               </motion.div>
 
-              {/* Floating accent elements */}
+              {/* Floating accents */}
               <motion.div
                 className="absolute -top-4 -right-4 w-8 h-8 bg-accent rounded-full"
-                animate={{
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 180, 360],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
+                animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               />
               <motion.div
                 className="absolute -bottom-4 -left-4 w-6 h-6 bg-primary rounded-full"
-                animate={{
-                  scale: [1, 1.3, 1],
-                  y: [0, -10, 0],
-                }}
+                animate={{ scale: [1, 1.3, 1], y: [0, -10, 0] }}
                 transition={{
                   duration: 3,
                   repeat: Infinity,
@@ -89,54 +98,40 @@ export const AboutSection = () => {
             </div>
           </motion.div>
 
-          {/* Text content */}
+          {/* Text */}
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: inView ? 1 : 0, x: inView ? 0 : -50 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <motion.p
-              className="text-xl leading-relaxed text-muted-foreground text-justify"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
+            <motion.p className="text-xl leading-relaxed text-muted-foreground text-justify">
               I'm a passionate creative designer with over 2 years of experience in
               crafting digital experiences that blend aesthetic beauty with functional
-              excellence of website and different kind of developement.
+              excellence of websites and different kinds of development.
             </motion.p>
 
-            <motion.p
-              className="text-lg leading-relaxed text-muted-foreground text-justify"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 1.2 }}
-            >
-              My journey began with a simple love for HTML,CSS,JAVA,C Program, and Phyton. Today, I
+            <motion.p className="text-lg leading-relaxed text-muted-foreground text-justify">
+              My journey began with a simple love for HTML, CSS, Java, C Program, and Python. Today, I
               specialize in creating immersive digital portfolios, brand identities,
               and interactive experiences that tell compelling stories of my work.
             </motion.p>
 
-            <motion.p
-              className="text-lg leading-relaxed text-muted-foreground text-justify"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
-             
-            >
+            <motion.p className="text-lg leading-relaxed text-muted-foreground text-justify">
               When I'm not designing, you'll find me exploring new technologies,
-              capturing moments through brainstorming and making research how to make a better
-              thing, or enjoying a perfect time with sleeping while listening to gospel music.
+              brainstorming ideas, doing research, or enjoying gospel music.
             </motion.p>
 
-            {/* Skills/Interests Icons */}
-            <motion.div
-              className="grid grid-cols-3 gap-4 pt-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 1.6 }}
-            >
+            {/* AdSense Ad */}
+            <div className="my-6 w-full flex justify-center">
+              <ins className="adsbygoogle"
+                   style={{ display: "block" }}
+                   data-ad-format="auto"
+                   data-full-width-responsive="true"></ins>
+            </div>
+
+            {/* Skills */}
+            <motion.div className="grid grid-cols-3 gap-4 pt-8">
               {skills.map((skill, index) => {
                 const Icon = skill.icon;
                 return (
@@ -144,19 +139,11 @@ export const AboutSection = () => {
                     key={skill.label}
                     className="flex flex-col items-center p-4 rounded-xl bg-card hover:bg-card/80 transition-colors group cursor-pointer"
                     initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{
-                      opacity: inView ? 1 : 0,
-                      scale: inView ? 1 : 0.8,
-                    }}
-                    transition={{ duration: 0.4, delay: 1.8 + index * 0.1 }}
-                    whileHover={{
-                      scale: 1.05,
-                      transition: { duration: 0.2 },
-                    }}
+                    animate={{ opacity: inView ? 1 : 0, scale: inView ? 1 : 0.8 }}
+                    transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
+                    whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                   >
-                    <Icon
-                      className={`w-8 h-8 mb-2 ${skill.color} group-hover:scale-110 transition-transform`}
-                    />
+                    <Icon className={`w-8 h-8 mb-2 ${skill.color} group-hover:scale-110 transition-transform`} />
                     <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                       {skill.label}
                     </span>
