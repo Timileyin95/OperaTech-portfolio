@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Calendar, MapPin, Award, Building } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const experiences = [
   {
@@ -56,17 +56,31 @@ export const ExperienceSection = () => {
 
   const [downloaded, setDownloaded] = useState(false);
 
+  // ✅ AdSense script injection
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
+    script.setAttribute("data-ad-client", "ca-pub-2277283346287122");
+    document.head.appendChild(script);
+
+    // Trigger ads after script loads
+    script.onload = () => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error("AdSense error:", e);
+      }
+    };
+  }, []);
+
   const handleDownload = () => {
-    // Trigger file download
     const link = document.createElement("a");
-    link.href = "/Resume Opera.pdf"; // file must be in your public folder
+    link.href = "/Resume Opera.pdf"; // must be in public folder
     link.download = "Resume_Opera.pdf";
     link.click();
 
-    // Show success message
     setDownloaded(true);
-
-    // Hide after 3 seconds
     setTimeout(() => setDownloaded(false), 3000);
   };
 
@@ -79,6 +93,7 @@ export const ExperienceSection = () => {
       transition={{ duration: 0.8 }}
     >
       <div className="max-w-5xl mx-auto">
+        {/* Header */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -92,8 +107,8 @@ export const ExperienceSection = () => {
           </p>
         </motion.div>
 
+        {/* Timeline */}
         <div className="relative">
-          {/* Timeline line */}
           <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 timeline-line" />
 
           <div className="space-y-12">
@@ -171,8 +186,7 @@ export const ExperienceSection = () => {
                             }}
                             transition={{
                               duration: 0.4,
-                              delay:
-                                0.8 + index * 0.2 + achIndex * 0.1,
+                              delay: 0.8 + index * 0.2 + achIndex * 0.1,
                             }}
                           >
                             <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0" />
@@ -184,14 +198,23 @@ export const ExperienceSection = () => {
                   </div>
                 </motion.div>
 
-                {/* Empty space for alternating layout */}
                 <div className="hidden md:block w-5/12" />
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Call to action */}
+        {/* AdSense Banner */}
+        <div className="my-8 w-full flex justify-center">
+          <ins className="adsbygoogle"
+               style={{ display: "block" }}
+               data-ad-client="ca-pub-2277283346287122"
+               data-ad-slot="3631477372"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+        </div>
+
+        {/* Resume download */}
         <motion.div
           className="text-center mt-16"
           initial={{ opacity: 0, y: 20 }}
@@ -214,7 +237,7 @@ export const ExperienceSection = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
-               Thank you for the Review, Resume has been downloaded!
+              Thank you for the Review, Resume has been downloaded!
             </motion.p>
           )}
         </motion.div>
